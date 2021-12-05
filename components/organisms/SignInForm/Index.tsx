@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function SignInForm() {
     return (
         <div>
@@ -18,9 +20,10 @@ export default function SignInForm() {
             <div className="button-group d-flex flex-column mx-auto pt-50">
                 <a className="btn btn-sign-in fw-medium text-lg text-white rounded-pill mb-16"
                     href="../index.html" role="button">Continue to Sign In</a>
-                <a className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
-                    href="/sign-up" role="button">Sign
-                    Up</a>
+                <Link href="/sign-up">
+                    <a className="btn btn-sign-up fw-medium text-lg color-palette-1 rounded-pill"
+                        role="button">SignUp</a>
+                </Link>
             </div>
         </div>
     )
