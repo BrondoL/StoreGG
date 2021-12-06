@@ -1,19 +1,25 @@
-import axios from "axios";
+import callAPI from "../config/api";
+import { LoginTypes } from "./data-types";
 
 const ROOT_API = process.env.NEXT_PUBLIC_API;
 const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 
 export async function setSignUp(data: FormData) {
-    const URL = `auth/signup`;
+    const url = `${ROOT_API}/${API_VERSION}/auth/signup`;
 
-    const response = await axios.post(`${ROOT_API}/${API_VERSION}/${URL}`, data).catch((err) => err.response);
-    const axiosResponse = response.data;
-    if(axiosResponse?.error === 1){
-        return axiosResponse;
-    }
-    return axiosResponse.data;
+    return callAPI({
+        url,
+        data,
+        method: "POST"
+    })
 }
 
-export async function setSignIn() {
-    return null;
+export async function setSignIn(data: LoginTypes) {
+    const url = `${ROOT_API}/${API_VERSION}/auth/signin`;
+
+    return callAPI({
+        url,
+        data,
+        method: 'POST'
+    })
 }
