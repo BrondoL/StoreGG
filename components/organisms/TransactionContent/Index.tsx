@@ -84,6 +84,7 @@ export default function TransactionContent() {
                                             item={`${transaction.historyVoucherTopup.coinQuantity} ${transaction.historyVoucherTopup.coinName}`}
                                             price={transaction.value}
                                             status={transaction.status}
+                                            id={transaction._id}
                                             />
                                 })}
                             </tbody>
