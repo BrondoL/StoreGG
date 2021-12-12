@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { getMemberOverview } from "../../../services/player";
+import { HistoryTransactionTypes, TopUpCategoriesTypes } from "../../../services/data-types";
+import { getMemberOverview } from "../../../services/member";
 import Category from "./Category";
 import TableRow from "./TableRow";
 
@@ -8,14 +9,21 @@ export default function OverviewContent() {
     const [count, setCount] = useState([]);
     const [data, setData] = useState([]);
 
-    useEffect(async () => {
-        const response = await getMemberOverview();
-        if(response.error){
-                toast.error(response.message);
-        }else{
-            setCount(response.data.count);
-            setData(response.data.data);
-        }
+    const getMemberOverviewAPI = useCallback(
+        async () => {
+            const response = await getMemberOverview();
+            if(response.error){
+                    toast.error(response.message);
+            }else{
+                setCount(response.data.count);
+                setData(response.data.data);
+            }
+        },
+        [getMemberOverview],
+    )
+
+    useEffect(() => {
+        getMemberOverviewAPI();
     }, []);
 
     const IMG = process.env.NEXT_PUBLIC_IMG;
@@ -28,8 +36,8 @@ export default function OverviewContent() {
                     <p className="text-lg fw-medium color-palette-1 mb-14">Top Up Categories</p>
                     <div className="main-content">
                         <div className="row">
-                            {count.map((item) => {
-                                return <Category nominal={item.value} icon="ic-desktop">{item.name}</Category>
+                            {count.map((item : TopUpCategoriesTypes) => {
+                                return <Category key={item._id} nominal={item.value} icon="ic-desktop">{item.name}</Category>
                             })}
                         </div>
                     </div>
@@ -47,8 +55,9 @@ export default function OverviewContent() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((item) => {
+                                {data.map((item : HistoryTransactionTypes) => {
                                     return <TableRow
+                                            key={item._id}
                                             title={item.historyVoucherTopup.gameName}
                                             category={item.historyVoucherTopup.category}
                                             item={`${item.historyVoucherTopup.coinQuantity} ${item.historyVoucherTopup.coinName}`}
